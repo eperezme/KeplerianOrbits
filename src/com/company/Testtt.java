@@ -4,11 +4,11 @@ package com.company;
 import static com.company.Main.G;
 import static com.company.Main.PI;
 
-public class Orbits {
+public class Testtt {
 
     /*** CONSTRUCTOR ***/
     // Hacer que variables sean mas explicatorias
-    public Orbits(double _M1, double _M2, double _e, double _a) {
+    public Testtt(double _M1, double _M2, double _e, double _a) {
         M1 = _M1;
         M2 = _M2;
         e = _e;
@@ -28,7 +28,12 @@ public class Orbits {
     }
 
     public double getEccAnom(double M) {
+        double K = PI / 180.0;
+        int i = 0;
         error = 1;
+        delta = Math.pow(10, -dp);
+        M = M / 360;
+        M = 2.0 * PI * (M - Math.floor(M));
         if (M > -PI && M < 0 || M > PI) E = M - e;
         else E = M + e;
         i_ke = 0;
@@ -36,7 +41,6 @@ public class Orbits {
             Eplus = E + ((M - E + e * Math.sin(E)) / (1 - e * Math.cos(E)));
             error = Math.abs(Eplus - E);
             E = Eplus;
-            System.out.println("Eplus " + Eplus);
             i_ke++;
         }
         System.out.println("Iterations " + i_ke);
@@ -62,7 +66,7 @@ public class Orbits {
 
     /*** Atributes ***/
 
-    private double M1, M2, e, a, M, E, Eplus, mu = 0, n, p, period, error;
+    private double M1, M2, e, a, M, E, Eplus, mu = 0, n, p, period, error, delta, dp;
     private int i_ke;
     private static final int MAX_ITERATION = 15;
     private static final double TOLERANCE = Math.pow(10, -8);
