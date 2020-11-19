@@ -1,24 +1,27 @@
 package com.company;
 
-import java.io.FileWriter;
-import java.lang.reflect.Array;
 import java.util.Random;
-import java.util.ArrayList;
 
 public class Main {
 
+    /*** ATRIBUTES ***/
+    public static final double G = 6.67428E-11;
+    public static final double PI = Math.PI;
+
     public static void main(String[] args) {
 
-
-
+        //Instance for random number generator
         Random random = new Random();
 
+        //Array of Orbit instances
         Orbits[] Test = new Orbits[10];
 
         for (int i = 0; i < Test.length; i++) {
             Test[i] = new Orbits(3000, 500, random.nextDouble(), 4000);
         }
 
+        /*** Print ***/
+        //Strings for text print
         String num = "Test(n)";
         String ecc = "e";
         String smAxis = "a";
@@ -33,16 +36,15 @@ public class Main {
         System.out.printf("%-10s %-20s %-10s %-20s %-20s %-20s %-20s %-20s %n", num, ecc, smAxis, EccAnom, iter, phi, posX, posY);
         System.out.println(divider);
 
-        int j;
-        for (j = 0; j < 10; j++){
-        System.out.printf("%-10s %-20s %-10s %-20s %-20s %-20s %-20s %-20s %n",
-                j, Test[j].getecc(),
-                Test[j].getSmAxis(),
-                Test[j].getEccAnom(random.nextInt(360)),
-                Test[j].getIter(),
-                Test[j].getTrueAnom(),
-                Test[j].getX_stored(),
-                Test[j].getY_stored());
+        for (int j = 0; j < 10; j++) {
+            System.out.printf("%-10s %-20s %-10s %-20s %-20s %-20s %-20s %-20s %n",
+                    j, Test[j].getecc(),
+                    Test[j].getSmAxis(),
+                    Test[j].getEccAnom(random.nextInt(360)),
+                    Test[j].getIter(),
+                    Test[j].getTrueAnom(),
+                    Test[j].getX_stored(),
+                    Test[j].getY_stored());
         }
         System.out.println(divider);
         /*
@@ -83,18 +85,15 @@ public class Main {
         System.out.println("Pos " + Test2.getPosition()); */
 
 
-            //Celestial Earth = new Celestial("Earth", "Planet", 2000000, 50000);
-            //Orbit Earth = new Orbit(3000, 0.3, 30, 55.65534333, 65.65432, 23456.65432);
+        //Celestial Earth = new Celestial("Earth", "Planet", 2000000, 50000);
+        //Orbit Earth = new Orbit(3000, 0.3, 30, 55.65534333, 65.65432, 23456.65432);
 
 
-            //System.out.println(Earth.getMass());
-            //System.out.println(Earth.getName());
+        //System.out.println(Earth.getMass());
+        //System.out.println(Earth.getName());
 
 
-        }
-    /*** ATRIBUTES ***/
-    public static final double G = 6.67428E-11;
-    public static final double PI = Math.PI;
+    }
 
 
 }

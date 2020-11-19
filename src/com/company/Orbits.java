@@ -7,7 +7,7 @@ import static com.company.Main.PI;
 public class Orbits {
 
     /*** CONSTRUCTOR ***/
-    // Hacer que variables sean mas explicatorias
+    // Make self-explain variables
     public Orbits(double _M1, double _M2, double _e, double _a) {
         M1 = _M1;
         M2 = _M2;
