@@ -1,5 +1,4 @@
 package com.company;
-
 import java.util.Random;
 
 public class Main {
@@ -13,40 +12,45 @@ public class Main {
         //Instance for random number generator
         Random random = new Random();
 
-        //Array of Orbit instances
-        Orbits[] Test = new Orbits[10];
+        //Array of Orbit instances /// I could change this with Arraylist instead of normal Array
+        Orbits[] orbitsList = new Orbits[10];
 
-        for (int i = 0; i < Test.length; i++) {
-            Test[i] = new Orbits(3000, 500, random.nextDouble(), 4000);
+        for (int i = 0; i < orbitsList.length; i++) {
+            orbitsList[i] = new Orbits(3000, 500, random.nextDouble(), 4000, random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360);
         }
 
-        /*** Print ***/
+        for (int j = 0; j < orbitsList.length; j++) {
+            orbitsList[j].getRVector();
+        }
+/*
+        *//*** Print ***//*
         //Strings for text print
-        String num = "Test(n)";
-        String ecc = "e";
-        String smAxis = "a";
-        String EccAnom = "E";
-        String phi = "TrueAnom";
+        String num = "Orbit(n)";
+        String ecc = "e"; String smAxis = "a";
+        String EccAnom = "E"; String meanAnom = "MeanAnom"; String phi = "TrueAnom";
         String iter = "Iterations";
-        String posX = "X";
-        String posY = "Y";
+        String posX = "X"; String posY = "Y";
         String divider = "------------------------------------------------";
 
 
-        System.out.printf("%-10s %-20s %-10s %-20s %-20s %-20s %-20s %-20s %n", num, ecc, smAxis, EccAnom, iter, phi, posX, posY);
+        System.out.printf("%-10s %-20s %-10s %-20s %-20s %-20s %-20s %-20s %-20s %n",
+                num, ecc, smAxis, EccAnom, iter, meanAnom, phi, posX, posY);
+
         System.out.println(divider);
 
-        for (int j = 0; j < 10; j++) {
-            System.out.printf("%-10s %-20s %-10s %-20s %-20s %-20s %-20s %-20s %n",
-                    j, Test[j].getecc(),
-                    Test[j].getSmAxis(),
-                    Test[j].getEccAnom(random.nextInt(360)),
-                    Test[j].getIter(),
-                    Test[j].getTrueAnom(),
-                    Test[j].getX_stored(),
-                    Test[j].getY_stored());
+        for (int j = 0; j < orbitsList.length; j++) {
+            System.out.printf("%-10s %-20s %-10s %-20s %-20s %-20s %-20s %-20s %-20s %n",
+                    j, orbitsList[j].getecc(),
+                    orbitsList[j].getSmAxis(),
+                    orbitsList[j].getEccAnom(random.nextInt(360)),
+                    orbitsList[j].getIter(),
+                    orbitsList[j].getMeanAnom(),
+                    orbitsList[j].getTrueAnom(),
+                    orbitsList[j].getxStored(),
+                    orbitsList[j].getyStored());
         }
-        System.out.println(divider);
+
+        System.out.println(divider);*/
         /*
             Orbits Test1 = new Orbits(3000, 500, 0.5, 4000);
             Orbits Test2 = new Orbits(3000, 500, 0.7, 4000);
@@ -60,12 +64,6 @@ public class Main {
             Orbits Test10 = new Orbits(3000, 500, 0.67, 4000);
 
          */
-
-
-
-
-
-
 
 
 

@@ -1,0 +1,21 @@
+<component name="libraryTable">
+  <library name="org.ejml:ejml-all:0.40" type="repository">
+    <properties maven-id="org.ejml:ejml-all:0.40" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/ejml/ejml-all/0.40/ejml-all-0.40.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/ejml/ejml-core/0.40/ejml-core-0.40.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/ejml/ejml-fdense/0.40/ejml-fdense-0.40.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/ejml/ejml-ddense/0.40/ejml-ddense-0.40.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/ejml/ejml-cdense/0.40/ejml-cdense-0.40.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/ejml/ejml-zdense/0.40/ejml-zdense-0.40.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/ejml/ejml-dsparse/0.40/ejml-dsparse-0.40.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/ejml/ejml-simple/0.40/ejml-simple-0.40.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/ejml/ejml-fsparse/0.40/ejml-fsparse-0.40.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/ejml-core-0.40-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ideaLibSources/ejml-simple-0.40-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

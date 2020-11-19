@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="286a3152-a5d6-45fc-9ced-0bce068ab1a0" />
+      <option name="name" value="286a3152-a5d6-45fc-9ced-0bce068ab1a0" />
+      <option name="url" value="https://mvnrepository.com/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="f90f8170-a683-4bc9-9236-3598ee794db5" />
+      <option name="name" value="f90f8170-a683-4bc9-9236-3598ee794db5" />
+      <option name="url" value="https://repo1.maven.org/maven2/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="5c2f6f97-d464-4389-a1ed-ee3b6332c679" />
+      <option name="name" value="5c2f6f97-d464-4389-a1ed-ee3b6332c679" />
+      <option name="url" value="https://oss.sonatype.org/content/repositories/releases/" />
+    </remote-repository>
+  </component>
+</project>
