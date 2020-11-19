@@ -11,8 +11,8 @@ public class Orbits {
     public Orbits(double _M1, double _M2, double _e, double _a) {
         M1 = _M1;
         M2 = _M2;
-        e = _e;
-        a = _a;
+        eccentricity = _e;
+        smAxis = _a;
 
         if (mu == 0) orbitSetup();
     }
@@ -20,28 +20,62 @@ public class Orbits {
     /*** METHODS ***/
     private void orbitSetup() {
         mu = G * (M1 + M2);
-        n = Math.sqrt((mu / Math.pow(a, 3)));
-        p = a * (1 - Math.pow(e, 2));
-        period = 2 * PI * Math.sqrt((Math.pow(a, 3)) / (mu));
+        n = Math.sqrt((mu / Math.pow(smAxis, 3)));
+        p = smAxis * (1 - Math.pow(eccentricity, 2));
+        period = 2 * PI * Math.sqrt((Math.pow(smAxis, 3)) / (mu));
         M = 0;
 
     }
 
-    public double getEccAnom(double M) {
+    public double getEccAnom(double MeanAnom) {
+        double K = PI / 180.0;
+        int i = 0;
         error = 1;
-        if (M > -PI && M < 0 || M > PI) E = M - e;
-        else E = M + e;
+        delta = Math.pow(10, -dp);
+        MeanAnom = MeanAnom / 360;
+        MeanAnom = 2.0 * PI * (MeanAnom - Math.floor(MeanAnom));
+        if (MeanAnom > -PI && MeanAnom < 0 || MeanAnom > PI) EccAnom = MeanAnom - eccentricity;
+        else EccAnom = MeanAnom + eccentricity;
         i_ke = 0;
         while (error > TOLERANCE && i_ke != MAX_ITERATION) {
-            Eplus = E + ((M - E + e * Math.sin(E)) / (1 - e * Math.cos(E)));
-            error = Math.abs(Eplus - E);
-            E = Eplus;
-            System.out.println("Eplus " + Eplus);
+            EccAnomPlus = EccAnom + ((MeanAnom - EccAnom + eccentricity * Math.sin(EccAnom)) / (1 - eccentricity * Math.cos(EccAnom)));
+            error = Math.abs(EccAnomPlus - EccAnom);
+            EccAnom = EccAnomPlus;
             i_ke++;
         }
         System.out.println("Iterations " + i_ke);
 
-        return E;
+        return EccAnom;
+    }
+
+    public double getTrueAnom(){
+        double K, S, C, fak, phi;
+        K = PI / 180.0;
+        S = Math.sin(EccAnom);
+        C = Math.cos(EccAnom);
+
+        fak = Math.sqrt( 1.0 - eccentricity * eccentricity);
+
+        phi = Math.atan2(fak * S, C - eccentricity) / K;
+
+        return Math.round(phi * Math.pow(10, dp)) / Math.pow(10, dp);
+    }
+
+    public String getPosition() {
+        double C, S, x, y;
+// a=semimajor axis, ec=eccentricity, E=eccentric anomaly
+// x,y = coordinates of the planet with respect to the Sun
+
+        C = Math.cos(EccAnom);
+
+        S = Math.sin(EccAnom);
+
+        x = smAxis * (C - eccentricity);
+
+        y = smAxis * Math.sqrt(1.0 - eccentricity * eccentricity) * S;
+
+        return "(" + x + "," + y + ")";
+
     }
 
     public double getMu() {
@@ -62,7 +96,7 @@ public class Orbits {
 
     /*** Atributes ***/
 
-    private double M1, M2, e, a, M, E, Eplus, mu = 0, n, p, period, error;
+    private double M1, M2, eccentricity, smAxis, M, EccAnom, EccAnomPlus, mu = 0, n, p, period, error, delta, dp;
     private int i_ke;
     private static final int MAX_ITERATION = 15;
     private static final double TOLERANCE = Math.pow(10, -8);

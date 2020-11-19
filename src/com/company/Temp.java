@@ -9,6 +9,10 @@ public class Temp {
 
 
 
+    /*** ATRIBUTES ***/
+    public double ec, MeanAnom, delta, EccAnom, F, a = 40000;
+    public int dp;
+
 public Temp(double _ec, double _m, int _dp){
         ec = _ec;
         MeanAnom = _m;
@@ -38,8 +42,10 @@ public Temp(double _ec, double _m, int _dp){
             i = i + 1;
 
         }
-
+        System.out.println("Before K E = " + EccAnom);
         EccAnom = EccAnom / K;
+        System.out.println("After K E = " + EccAnom);
+
 
         return Math.round(EccAnom * Math.pow(10, dp)) / Math.pow(10, dp);
 
@@ -75,9 +81,5 @@ public Temp(double _ec, double _m, int _dp){
         return "(" + x + "," + y + ")";
 
     }
-
-    /*** ATRIBUTES ***/
-    public double ec, MeanAnom, delta, EccAnom, F, a = 40000;
-    public int dp;
 
 }

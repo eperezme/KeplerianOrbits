@@ -6,6 +6,13 @@ import static com.company.Main.PI;
 
 public class Testtt {
 
+    private static final int MAX_ITERATION = 15;
+    private static final double TOLERANCE = Math.pow(10, -8);
+    /*** Atributes ***/
+
+    private double M1, M2, e, a, M, E, Eplus, mu = 0, n, p, period, error, delta, dp;
+    private int i_ke;
+
     /*** CONSTRUCTOR ***/
     // Hacer que variables sean mas explicatorias
     public Testtt(double _M1, double _M2, double _e, double _a) {
@@ -63,11 +70,4 @@ public class Testtt {
     public double getP() {
         return p;
     }
-
-    /*** Atributes ***/
-
-    private double M1, M2, e, a, M, E, Eplus, mu = 0, n, p, period, error, delta, dp;
-    private int i_ke;
-    private static final int MAX_ITERATION = 15;
-    private static final double TOLERANCE = Math.pow(10, -8);
 }

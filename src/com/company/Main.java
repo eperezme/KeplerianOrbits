@@ -5,19 +5,25 @@ public class Main {
     public static void main(String[] args) {
 
         Orbits Test1 = new Orbits(20000, 3000, 0.5, 40000);
+        Orbits Test2 = new Orbits(3000, 500, 0.7, 4000);
         System.out.println("Mu " + Test1.getMu());
+        System.out.println("Mu " + Test2.getMu());
         System.out.println("n " + Test1.getN());
+        System.out.println("n " + Test2.getN());
+        System.out.println("P " + Test2.getP());
         System.out.println("P " + Test1.getP());
         System.out.println("Period " + Test1.getPeriod());
-        System.out.println("Final E " + Test1.getEccAnom(30));
+        System.out.println("Period " + Test2.getPeriod());
+        System.out.println("E " + Test1.getEccAnom(70));
+        System.out.println("E " + Test2.getEccAnom(70));
+        System.out.println("True " + Test1.getTrueAnom());
+        System.out.println("True " + Test2.getTrueAnom());
+        System.out.println("Pos " + Test1.getPosition());
+        System.out.println("Pos " + Test2.getPosition());
 
-        Temp Test2 = new Temp(0.5, 30, 15);
-        System.out.println("E " + Test2.EccAnom());
-        System.out.println("True " + Test2.TrueAnom());
-        System.out.println("Position " + Test2.position());
 
-        Testtt Test3 = new Testtt(2000, 3000, 0.5, 40000);
-        System.out.println("E " + Test3.getEccAnom(30));
+
+
 
 
 

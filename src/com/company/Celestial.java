@@ -32,7 +32,11 @@ public class Celestial {
     /** Orbit as Nested Class **/
     public class Orbit{
         /** Attributes **/
-        private double a, e, I, O, w, M;
+        private double a;
+        private double e;
+        private double I;
+        private double w;
+        private double M;
 
         /** Gravitational Constant **/
         public static final double G = 6.67428E-11;
@@ -42,7 +46,6 @@ public class Celestial {
             a = ac;
             e = ec;
             I = Ic;
-            O = Oc;
             w = wc;
             M = Mc;
         }
