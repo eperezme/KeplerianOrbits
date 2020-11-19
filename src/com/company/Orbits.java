@@ -43,8 +43,7 @@ public class Orbits {
             EccAnom = EccAnomPlus;
             i_ke++;
         }
-        System.out.println("Iterations " + i_ke);
-
+        iter = i_ke;
         return EccAnom;
     }
 
@@ -74,8 +73,19 @@ public class Orbits {
 
         y = smAxis * Math.sqrt(1.0 - eccentricity * eccentricity) * S;
 
+        x_stored = x;
+        y_stored = y;
+
         return "(" + x + "," + y + ")";
 
+    }
+
+    public double getSmAxis(){
+        return smAxis;
+    }
+
+    public double getecc(){
+        return eccentricity;
     }
 
     public double getMu() {
@@ -94,10 +104,31 @@ public class Orbits {
         return p;
     }
 
+    public double getIter(){
+        return iter;
+    }
+
+    public double getX_stored(){
+        if(x_stored == 0) {
+            getPosition();
+            return x_stored;
+        }
+        else return x_stored;
+        }
+
+    public double getY_stored() {
+        if(y_stored == 0){
+            getPosition();
+            return y_stored;
+        }
+        else return y_stored;
+    }
+
     /*** Atributes ***/
 
     private double M1, M2, eccentricity, smAxis, M, EccAnom, EccAnomPlus, mu = 0, n, p, period, error, delta, dp;
-    private int i_ke;
+    private int i_ke, iter;
     private static final int MAX_ITERATION = 15;
     private static final double TOLERANCE = Math.pow(10, -8);
+    private double x_stored, y_stored;
 }
