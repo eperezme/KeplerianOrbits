@@ -1,18 +1,28 @@
 package com.company;
+
+import org.threadly.util.Clock;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
     /*** ATRIBUTES ***/
     public static final double G = 6.67428E-11;
     public static final double PI = Math.PI;
+    private static int numberOfOrbits = 1;
 
-    /** FUNCTIONS **/
-    public static Orbits[] initOrbits(Random random){
-        Orbits[] orbitsList = new Orbits[1000000];
+    public static Clock initClock() {
+        return new Clock();
+    }
+
+
+    /*** FUNCTIONS**/
+
+    public static <numberOfOrbits> Orbits[] initOrbits(Random random) {
+        Orbits[] orbitsList = new Orbits[numberOfOrbits];
 
         for (int i = 0; i < orbitsList.length; i++) {
-            orbitsList[i] = new Orbits(3000, 500, random.nextDouble(), 4000, random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360);
+            orbitsList[i] = new Orbits(random.nextDouble() * 100000, random.nextDouble() * 80000, random.nextDouble(), 4000, random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360);
         }
 
 
@@ -20,8 +30,10 @@ public class Main {
     }
 
 
+    public static void main(String[] args) throws InterruptedException {
 
-    public static void main(String[] args) {
+        //Instance for clock
+        Clock clock = initClock();
 
         //Instance for random number generator
 
@@ -30,11 +42,21 @@ public class Main {
         //Array of Orbit instances /// I could change this with Arraylist instead of normal Array
         Orbits[] orbitsList = initOrbits(random);
 
-
-        for (Orbits orbits : orbitsList) {
-            orbits.getRVector();
+        for (Orbits orbits : orbitsList){
+            orbits.setPeriod(10);
         }
+
+        while (true) {
+            for (Orbits orbits : orbitsList) {
+                orbits.update();
+                orbits.getRVector();
+            }
+            TimeUnit.SECONDS.sleep(1);
+
 /*
+    }
+
+
         *//*** Print ***//*
         //Strings for text print
         String num = "Orbit(n)";
@@ -95,17 +117,18 @@ public class Main {
         System.out.println("Pos " + Test2.getPosition()); */
 
 
-        //Celestial Earth = new Celestial("Earth", "Planet", 2000000, 50000);
-        //Orbit Earth = new Orbit(3000, 0.3, 30, 55.65534333, 65.65432, 23456.65432);
+            //Celestial Earth = new Celestial("Earth", "Planet", 2000000, 50000);
+            //Orbit Earth = new Orbit(3000, 0.3, 30, 55.65534333, 65.65432, 23456.65432);
 
 
-        //System.out.println(Earth.getMass());
-        //System.out.println(Earth.getName());
+            //System.out.println(Earth.getMass());
+            //System.out.println(Earth.getName());
+
+
+        }
 
 
     }
-
-
 }
 
 

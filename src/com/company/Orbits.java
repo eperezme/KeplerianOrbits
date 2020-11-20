@@ -1,6 +1,8 @@
 package com.company;
 
 import org.ejml.simple.SimpleMatrix;
+import org.threadly.util.Clock;
+
 import java.util.Random;
 import static com.company.Main.G;
 import static com.company.Main.PI;
@@ -26,15 +28,13 @@ public class Orbits {
         meanAngularMotion = Math.sqrt((mu / Math.pow(smAxis, 3)));
         semiParameter = smAxis * (1 - Math.pow(eccentricity, 2));
         period = 2 * PI * Math.sqrt((Math.pow(smAxis, 3)) / (mu));
-        double m = 0;
 
     }
 
-    public double getEccAnom(double MeanAnom) {
-        double K = PI / 180.0;
-        int i = 0;
+    public double getEccAnom() {
+
         double error = 1;
-        double delta = Math.pow(10, -dp);
+        double MeanAnom = getMeanAnom();
         MeanAnom = MeanAnom / 360;
         MeanAnom = 2.0 * PI * (MeanAnom - Math.floor(MeanAnom));
         if (MeanAnom > -PI && MeanAnom < 0 || MeanAnom > PI) eccAnom = MeanAnom - eccentricity;
@@ -81,9 +81,11 @@ public class Orbits {
 
     }
 
+
+    //SOLVE THIS
     public double getMeanAnom(double meanAngularMotion, double timeSincePe){
 
-        meanAnomaly = meanAngularMotion * timeSincePe;
+        double meanAnomaly = meanAngularMotion * timeSincePe;
 
         return meanAnomaly;
     }
@@ -106,6 +108,10 @@ public class Orbits {
 
     public double getPeriod() {
         return period;
+    }
+
+    public void setPeriod(double _period){
+        period = _period;
     }
 
     public double getSemiParameter() {
@@ -137,7 +143,7 @@ public class Orbits {
     {
         Random random = new Random();
         SimpleMatrix rotationMatrix = new SimpleMatrix(3,3, true, new double[]{(Math.cos(longitudeAscendingNode) * Math.cos(argumentPeriapsis) - Math.sin(longitudeAscendingNode) * Math.sin(argumentPeriapsis) * Math.cos(inclination)), (-Math.cos(longitudeAscendingNode) * Math.sin(argumentPeriapsis) - Math.sin(longitudeAscendingNode) * Math.cos(argumentPeriapsis) * Math.cos(inclination)), (Math.sin(longitudeAscendingNode) * Math.sin(inclination)),(Math.sin(longitudeAscendingNode) * Math.cos(argumentPeriapsis) + Math.cos(longitudeAscendingNode) * Math.sin(argumentPeriapsis) * Math.cos(inclination)), (-Math.sin(longitudeAscendingNode) * Math.cos(argumentPeriapsis) * Math.cos(inclination)), (-Math.cos(longitudeAscendingNode) * Math.sin(inclination)), (Math.sin(argumentPeriapsis) * Math.sin(inclination)), (Math.cos(argumentPeriapsis) * Math.sin(inclination)), (Math.cos(inclination))});
-        eccAnom = getEccAnom(random.nextDouble() * 360);
+        eccAnom = getEccAnom(getMeanAnom(getMeanAngularMotion(), getTimeSincePeriapsis(getActualTime(), getPeriod())));
         double phi = getTrueAnom(eccAnom);
         double cosTrue = Math.cos(phi);
         double sinTrue = Math.sin(phi);
@@ -151,10 +157,14 @@ public class Orbits {
         rVectorIJK.print();
     }
 
-   public double getTimeSincePeriapsis(double actualTime, double Period)
+    public double getTimeSincePeriapsis(double actualTime, double Period)
    {
        return actualTime % Period;
    }
+
+    public double getActualTime(){
+        return (double) Clock.accurateForwardProgressingMillis();
+    }
 
     public void update(){
         double timeSincePeriapsis = getTimeSincePeriapsis(getActualTime(), getPeriod());
@@ -165,15 +175,14 @@ public class Orbits {
     }
 
 
-
-
-
-
-
     /*** Atributes ***/
 
     private final double mass1, mass2, eccentricity, smAxis;
-    private double meanAnomaly, eccAnom, mu = 0, meanAngularMotion, semiParameter, period;
+    private double eccAnom;
+    private double mu = 0;
+    private double meanAngularMotion;
+    private double semiParameter;
+    private double period;
     private final double dp =15;
     private int iter;
     private static final int MAX_ITERATION = 15;

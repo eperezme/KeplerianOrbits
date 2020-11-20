@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="org.threadly:threadly:6.5" type="repository">
+    <properties maven-id="org.threadly:threadly:6.5" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/threadly/threadly/6.5/threadly-6.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
