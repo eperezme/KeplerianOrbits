@@ -146,13 +146,17 @@ public class Orbits {
 
         SimpleMatrix rVectorPQW = new SimpleMatrix(3,1, true, new double[]{  (p * cosTrue) / (1 + eccentricity * cosTrue), (p * sinTrue) / (1 + eccentricity * sinTrue), 0 });
         SimpleMatrix rVectorIJK = rotationMatrix.mult(rVectorPQW);
-        System.out.println("//  OMEGA  " + longitudeAscendingNode + " // " + "w  " + argumentPeriapsis + " // " + "i " + inclination + "  //");
+        System.out.println("//  OMEGA  " + longitudeAscendingNode + " // " + "w  " + argumentPeriapsis + " // " + "i " + inclination);
         //System.out.println("p = " + p + " && " + "true " + phi + " && " + "e " + eccentricity);
         //rotationMatrix.print();
         //rVectorPQW.print();
         rVectorIJK.print();
     }
+    /** Get Time since periapsis **/
+    /*public double getTimeSincePe() {
 
+        return timeTotal % getPeriod();
+    }*/
 
 
     /*** MATRICES ***/

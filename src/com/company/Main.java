@@ -7,20 +7,32 @@ public class Main {
     public static final double G = 6.67428E-11;
     public static final double PI = Math.PI;
 
-    public static void main(String[] args) {
-
-        //Instance for random number generator
-        Random random = new Random();
-
-        //Array of Orbit instances /// I could change this with Arraylist instead of normal Array
-        Orbits[] orbitsList = new Orbits[10];
+    /** FUNCTIONS **/
+    public static Orbits[] initOrbits(Random random){
+        Orbits[] orbitsList = new Orbits[1000000];
 
         for (int i = 0; i < orbitsList.length; i++) {
             orbitsList[i] = new Orbits(3000, 500, random.nextDouble(), 4000, random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360);
         }
 
-        for (int j = 0; j < orbitsList.length; j++) {
-            orbitsList[j].getRVector();
+
+        return orbitsList;
+    }
+
+
+
+    public static void main(String[] args) {
+
+        //Instance for random number generator
+
+        Random random = new Random();
+
+        //Array of Orbit instances /// I could change this with Arraylist instead of normal Array
+        Orbits[] orbitsList = initOrbits(random);
+
+
+        for (Orbits orbits : orbitsList) {
+            orbits.getRVector();
         }
 /*
         *//*** Print ***//*
