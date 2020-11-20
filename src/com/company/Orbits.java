@@ -29,6 +29,7 @@ public class Orbits {
         semiParameter = smAxis * (1 - Math.pow(eccentricity, 2));
         period = 2 * PI * Math.sqrt((Math.pow(smAxis, 3)) / (mu));
 
+
     }
 
     public double getEccAnom() {
@@ -83,11 +84,8 @@ public class Orbits {
 
 
     //SOLVE THIS
-    public double getMeanAnom(double meanAngularMotion, double timeSincePe){
-
-        double meanAnomaly = meanAngularMotion * timeSincePe;
-
-        return meanAnomaly;
+    public double getMeanAnom(){
+        return getMeanAngularMotion() * getTimeSincePeriapsis();
     }
 
     public double getSmAxis(){
@@ -111,7 +109,22 @@ public class Orbits {
     }
 
     public void setPeriod(double _period){
-        period = _period;
+        this.period = _period;
+        updateMeanAngularMotion();
+    }
+
+    // Lombok? <- Autoconstructor
+    public void setMeanAngularMotion(double _newAngularMotion){
+    meanAngularMotion = _newAngularMotion;
+    updatePeriod();
+    }
+
+    public void updatePeriod(){
+        period = (2 * PI) / meanAngularMotion;
+    }
+
+    public void updateMeanAngularMotion(){
+        meanAngularMotion = (2 * PI) / period;
     }
 
     public double getSemiParameter() {
@@ -143,23 +156,23 @@ public class Orbits {
     {
         Random random = new Random();
         SimpleMatrix rotationMatrix = new SimpleMatrix(3,3, true, new double[]{(Math.cos(longitudeAscendingNode) * Math.cos(argumentPeriapsis) - Math.sin(longitudeAscendingNode) * Math.sin(argumentPeriapsis) * Math.cos(inclination)), (-Math.cos(longitudeAscendingNode) * Math.sin(argumentPeriapsis) - Math.sin(longitudeAscendingNode) * Math.cos(argumentPeriapsis) * Math.cos(inclination)), (Math.sin(longitudeAscendingNode) * Math.sin(inclination)),(Math.sin(longitudeAscendingNode) * Math.cos(argumentPeriapsis) + Math.cos(longitudeAscendingNode) * Math.sin(argumentPeriapsis) * Math.cos(inclination)), (-Math.sin(longitudeAscendingNode) * Math.cos(argumentPeriapsis) * Math.cos(inclination)), (-Math.cos(longitudeAscendingNode) * Math.sin(inclination)), (Math.sin(argumentPeriapsis) * Math.sin(inclination)), (Math.cos(argumentPeriapsis) * Math.sin(inclination)), (Math.cos(inclination))});
-        eccAnom = getEccAnom(getMeanAnom(getMeanAngularMotion(), getTimeSincePeriapsis(getActualTime(), getPeriod())));
+        eccAnom = getEccAnom();
         double phi = getTrueAnom(eccAnom);
         double cosTrue = Math.cos(phi);
         double sinTrue = Math.sin(phi);
 
         SimpleMatrix rVectorPQW = new SimpleMatrix(3,1, true, new double[]{  (semiParameter * cosTrue) / (1 + eccentricity * cosTrue), (semiParameter * sinTrue) / (1 + eccentricity * sinTrue), 0 });
         SimpleMatrix rVectorIJK = rotationMatrix.mult(rVectorPQW);
-        System.out.println("//  OMEGA  " + longitudeAscendingNode + " // " + "w  " + argumentPeriapsis + " // " + "i " + inclination);
+        System.out.println("//  OMEGA  " + longitudeAscendingNode + " // " + "w  " + argumentPeriapsis + " // " + "i " + inclination + " // " + getMeanAnom());
         //System.out.println("p = " + p + " && " + "true " + phi + " && " + "e " + eccentricity);
         //rotationMatrix.print();
         //rVectorPQW.print();
         rVectorIJK.print();
     }
 
-    public double getTimeSincePeriapsis(double actualTime, double Period)
+    public double getTimeSincePeriapsis()
    {
-       return actualTime % Period;
+       return getActualTime() % getPeriod();
    }
 
     public double getActualTime(){
@@ -167,12 +180,8 @@ public class Orbits {
     }
 
     public void update(){
-        double timeSincePeriapsis = getTimeSincePeriapsis(getActualTime(), getPeriod());
-        double meanAnom = getMeanAnom(getMeanAngularMotion(),  timeSincePeriapsis);
-        getEccAnom(meanAnom);
-
-
-    }
+        getEccAnom();
+  }
 
 
     /*** Atributes ***/
@@ -188,7 +197,7 @@ public class Orbits {
     private static final int MAX_ITERATION = 15;
     private static final double TOLERANCE = Math.pow(10, -8);
     private double xStored, yStored;
-    public double inclination, longitudeAscendingNode, argumentPeriapsis;
+    public final double inclination, longitudeAscendingNode, argumentPeriapsis;
 
 }
 
