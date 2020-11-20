@@ -12,10 +12,8 @@ public class Orbits {
 
     /*** CONSTRUCTOR ***/
     // Make self-explain variables
-    public Orbits(double _M1, double _M2, double _e, double _a, double _omega, double _w, double _i, int _id, double _period) {
+    public Orbits(double _e, double _a, double _omega, double _w, double _i, int _id, double _period) {
         id = _id;
-        mass1 = _M1;
-        mass2 = _M2;
         eccentricity = _e;
         smAxis = _a;
         longitudeAscendingNode = _omega;
@@ -161,18 +159,15 @@ public class Orbits {
     public void getRVector()
     {
         Random random = new Random();
-        //double phi = getTrueAnom();
-        double phi = 92.335;
+        double phi = getTrueAnom();
         double cosTrue = Math.cos(phi);
         double sinTrue = Math.sin(phi);
-        double semiParameter = 11067.790;
-        double eccentricity = 0.83285;
         SimpleMatrix rVectorPQW = new SimpleMatrix(3,1, true, new double[]{  (semiParameter * cosTrue) / (1 + eccentricity * cosTrue), (semiParameter * sinTrue) / (1 + eccentricity * sinTrue), 0 });
         SimpleMatrix rVectorIJK = rotationMatrix.mult(rVectorPQW);
         //System.out.println("p = " + p + " && " + "true " + phi + " && " + "e " + eccentricity);
-        rotationMatrix.print();
-        rVectorPQW.print();
-        rVectorIJK.print();
+        //rotationMatrix.print();
+        //rVectorPQW.print();
+        //rVectorIJK.print();
         x = rVectorIJK.get(0,0);
         y = rVectorIJK.get(1,0);
         z = rVectorIJK.get(2,0);
@@ -188,14 +183,15 @@ public class Orbits {
     }
 
     public SimpleMatrix initRotationMatrix(){
-        return new SimpleMatrix(3,3, true, new double[]{((Math.cos(longitudeAscendingNode) * Math.cos(argumentPeriapsis)) - (Math.sin(longitudeAscendingNode) * Math.sin(argumentPeriapsis) * Math.cos(inclination))), ((((-1) * Math.cos(longitudeAscendingNode)) * Math.sin(argumentPeriapsis)) - (Math.sin(longitudeAscendingNode) * Math.cos(argumentPeriapsis) * Math.cos(inclination))), (Math.sin(longitudeAscendingNode) * Math.sin(inclination)),(Math.sin(longitudeAscendingNode) * Math.cos(argumentPeriapsis) + Math.cos(longitudeAscendingNode) * Math.sin(argumentPeriapsis) * Math.cos(inclination)), (((-1) * Math.sin(longitudeAscendingNode)) * Math.cos(argumentPeriapsis) * Math.cos(inclination)), (((-1) * Math.cos(longitudeAscendingNode) * Math.sin(inclination))), (Math.sin(argumentPeriapsis) * Math.sin(inclination)), (Math.cos(argumentPeriapsis) * Math.sin(inclination)), (Math.cos(inclination))});
+        double omega = Math.toRadians(longitudeAscendingNode);
+        double i = Math.toRadians(inclination);
+        double w = Math.toRadians(argumentPeriapsis);
+        return new SimpleMatrix(3,3, true, new double[]{((Math.cos(omega) * Math.cos(w)) - (Math.sin(omega) * Math.sin(w) * Math.cos(i))), ((((-1) * Math.cos(omega)) * Math.sin(w)) - (Math.sin(omega) * Math.cos(w) * Math.cos(i))), (Math.sin(omega) * Math.sin(i)),(Math.sin(omega) * Math.cos(w) + Math.cos(omega) * Math.sin(w) * Math.cos(i)), (((-1) * Math.sin(omega)) * Math.cos(w) * Math.cos(i)), (((-1) * Math.cos(omega) * Math.sin(i))), (Math.sin(w) * Math.sin(i)), (Math.cos(w) * Math.sin(i)), (Math.cos(i))});
     }
 
 
     /*** Atributes ***/
 
-    private final double mass1;
-    private final double mass2;
     private final double eccentricity;
     private final double smAxis;
     private final double id;
