@@ -3,6 +3,7 @@ package com.company;
 import org.ejml.simple.SimpleMatrix;
 import org.threadly.util.Clock;
 
+import java.time.Period;
 import java.util.Random;
 import static com.company.Main.G;
 import static com.company.Main.PI;
@@ -11,7 +12,8 @@ public class Orbits {
 
     /*** CONSTRUCTOR ***/
     // Make self-explain variables
-    public Orbits(double _M1, double _M2, double _e, double _a, double _omega, double _w, double _i) {
+    public Orbits(double _M1, double _M2, double _e, double _a, double _omega, double _w, double _i, int _id, double _period) {
+        id = _id;
         mass1 = _M1;
         mass2 = _M2;
         eccentricity = _e;
@@ -19,13 +21,16 @@ public class Orbits {
         longitudeAscendingNode = _omega;
         argumentPeriapsis = _w;
         inclination = _i;
+        period = _period;
+        rotationMatrix = initRotationMatrix();
+        rotationMatrix.print();
         orbitSetup();
     }
 
     /*** METHODS ***/
     private void orbitSetup() {
-        mu = G * (mass1 + mass2);
-        meanAngularMotion = Math.sqrt((mu / Math.pow(smAxis, 3)));
+        meanAngularMotion = (2 * PI) / period;
+        mu = Math.pow(meanAngularMotion, 2) * Math.pow(smAxis, 3);
         semiParameter = smAxis * (1 - Math.pow(eccentricity, 2));
         period = 2 * PI * Math.sqrt((Math.pow(smAxis, 3)) / (mu));
 
@@ -53,8 +58,9 @@ public class Orbits {
 
 
 
-    public double getTrueAnom(double eccAnom){
+    public double getTrueAnom(){
         double K, S, C, fak, phi;
+        double eccAnom = getEccAnom();
         K = PI / 180.0;
         S = Math.sin(eccAnom);
         C = Math.cos(eccAnom);
@@ -109,7 +115,7 @@ public class Orbits {
     }
 
     public void setPeriod(double _period){
-        this.period = _period;
+        period = _period;
         updateMeanAngularMotion();
     }
 
@@ -155,19 +161,21 @@ public class Orbits {
     public void getRVector()
     {
         Random random = new Random();
-        SimpleMatrix rotationMatrix = new SimpleMatrix(3,3, true, new double[]{(Math.cos(longitudeAscendingNode) * Math.cos(argumentPeriapsis) - Math.sin(longitudeAscendingNode) * Math.sin(argumentPeriapsis) * Math.cos(inclination)), (-Math.cos(longitudeAscendingNode) * Math.sin(argumentPeriapsis) - Math.sin(longitudeAscendingNode) * Math.cos(argumentPeriapsis) * Math.cos(inclination)), (Math.sin(longitudeAscendingNode) * Math.sin(inclination)),(Math.sin(longitudeAscendingNode) * Math.cos(argumentPeriapsis) + Math.cos(longitudeAscendingNode) * Math.sin(argumentPeriapsis) * Math.cos(inclination)), (-Math.sin(longitudeAscendingNode) * Math.cos(argumentPeriapsis) * Math.cos(inclination)), (-Math.cos(longitudeAscendingNode) * Math.sin(inclination)), (Math.sin(argumentPeriapsis) * Math.sin(inclination)), (Math.cos(argumentPeriapsis) * Math.sin(inclination)), (Math.cos(inclination))});
-        eccAnom = getEccAnom();
-        double phi = getTrueAnom(eccAnom);
+        //double phi = getTrueAnom();
+        double phi = 92.335;
         double cosTrue = Math.cos(phi);
         double sinTrue = Math.sin(phi);
-
+        double semiParameter = 11067.790;
+        double eccentricity = 0.83285;
         SimpleMatrix rVectorPQW = new SimpleMatrix(3,1, true, new double[]{  (semiParameter * cosTrue) / (1 + eccentricity * cosTrue), (semiParameter * sinTrue) / (1 + eccentricity * sinTrue), 0 });
         SimpleMatrix rVectorIJK = rotationMatrix.mult(rVectorPQW);
-        System.out.println("//  OMEGA  " + longitudeAscendingNode + " // " + "w  " + argumentPeriapsis + " // " + "i " + inclination + " // " + getMeanAnom());
         //System.out.println("p = " + p + " && " + "true " + phi + " && " + "e " + eccentricity);
-        //rotationMatrix.print();
-        //rVectorPQW.print();
+        rotationMatrix.print();
+        rVectorPQW.print();
         rVectorIJK.print();
+        x = rVectorIJK.get(0,0);
+        y = rVectorIJK.get(1,0);
+        z = rVectorIJK.get(2,0);
     }
 
     public double getTimeSincePeriapsis()
@@ -176,17 +184,21 @@ public class Orbits {
    }
 
     public double getActualTime(){
-        return (double) Clock.accurateForwardProgressingMillis();
+        return (double) Clock.accurateForwardProgressingMillis() / 1000;
     }
 
-    public void update(){
-        getEccAnom();
-  }
+    public SimpleMatrix initRotationMatrix(){
+        return new SimpleMatrix(3,3, true, new double[]{((Math.cos(longitudeAscendingNode) * Math.cos(argumentPeriapsis)) - (Math.sin(longitudeAscendingNode) * Math.sin(argumentPeriapsis) * Math.cos(inclination))), ((((-1) * Math.cos(longitudeAscendingNode)) * Math.sin(argumentPeriapsis)) - (Math.sin(longitudeAscendingNode) * Math.cos(argumentPeriapsis) * Math.cos(inclination))), (Math.sin(longitudeAscendingNode) * Math.sin(inclination)),(Math.sin(longitudeAscendingNode) * Math.cos(argumentPeriapsis) + Math.cos(longitudeAscendingNode) * Math.sin(argumentPeriapsis) * Math.cos(inclination)), (((-1) * Math.sin(longitudeAscendingNode)) * Math.cos(argumentPeriapsis) * Math.cos(inclination)), (((-1) * Math.cos(longitudeAscendingNode) * Math.sin(inclination))), (Math.sin(argumentPeriapsis) * Math.sin(inclination)), (Math.cos(argumentPeriapsis) * Math.sin(inclination)), (Math.cos(inclination))});
+    }
 
 
     /*** Atributes ***/
 
-    private final double mass1, mass2, eccentricity, smAxis;
+    private final double mass1;
+    private final double mass2;
+    private final double eccentricity;
+    private final double smAxis;
+    private final double id;
     private double eccAnom;
     private double mu = 0;
     private double meanAngularMotion;
@@ -196,8 +208,40 @@ public class Orbits {
     private int iter;
     private static final int MAX_ITERATION = 15;
     private static final double TOLERANCE = Math.pow(10, -8);
-    private double xStored, yStored;
-    public final double inclination, longitudeAscendingNode, argumentPeriapsis;
+    private double xStored, yStored, x, y, z;
+    private final double inclination;
+    private final double longitudeAscendingNode;
+    private final double argumentPeriapsis;
+    public SimpleMatrix rotationMatrix;
+
+    public double getInclination() {
+        return inclination;
+    }
+
+    public double getLongitudeAscendingNode() {
+        return longitudeAscendingNode;
+    }
+
+    public double getArgumentPeriapsis() {
+        return argumentPeriapsis;
+    }
+
+    public double getZ() {
+        return z;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getId() {
+        return id;
+    }
+
 
 }
 
