@@ -9,8 +9,10 @@ public class Main
 	/*** ATRIBUTES ***/
 	public static final double G = 6.67428E-11;
 	public static final double PI = Math.PI;
-	private static final int numberOfOrbits = 1;
+	private static final int numberOfOrbits = 12;
 	private static final int TIME = 1000;
+	private static ArrayList<Orbit> orbits = new ArrayList<>();
+
 
     /*
     public static Clock initClock() {
@@ -21,20 +23,17 @@ public class Main
 
 	/*** FUNCTIONS**/
 
-	public static Orbits[] initOrbits(Random random)
+	public static ArrayList<Orbit> initOrbits(Random random)
 	{
-		Orbits[] orbitsList = new Orbits[numberOfOrbits];
-
-		for (Orbits orbit : orbitsList)
+		for (int i = 0; i < numberOfOrbits; i++)
 		{
 			//orbitsList[i] = new Orbits(0.3, 100, random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, i, 60);
 			//orbitsList[i] = new Orbits(0.3, 4000, 0, 90, 0, i, 60);
-            orbit = new Orbits(random.nextDouble(), random.nextDouble() * 10000, 0, 90, 0,60);
-
+			Orbit orbit = new Orbit(random.nextDouble(), random.nextDouble() * 10000, 0, 90, 0,60);
+			orbits.add(orbit);
 		}
 
-
-		return orbitsList;
+		return orbits;
 	}
 
 	public static ArrayList<Integer> createTime()
@@ -64,7 +63,7 @@ public class Main
 		Random random = new Random();
 
 		//Array of Orbit instances /// I could change this with Arraylist instead of normal Array
-		Orbits[] orbitsList = initOrbits(random);
+		orbits = initOrbits(random);
 
 
         /*
@@ -76,16 +75,19 @@ public class Main
         }
         */
 		System.out.println("Exccentricity");
-		System.out.println(orbitsList[0].getEccentricity());
-		System.out.printf("%-30s %-30s %-20s %-20s %-20s %n", "X", "Y", "Z", "Time", "OrbitNum");
+		for (Orbit orbit : orbits)
+		{
+			System.out.println(orbit.getEccentricity());
+			System.out.printf("%-30s %-30s %-20s %-20s %-20s %n", "X", "Y", "Z", "Time", "OrbitNum");
+		}
 
 		for (int i : time)
 		{
-			for (Orbits orbits : orbitsList)
+			for (Orbit orbit : orbits)
 			{
-				orbits.getRVector(time, random, i);
+				orbit.getRVector(time, random, i);
 				//System.out.printf("%-30s %-30s %-20s %-20s %n", orbits.getX(), orbits.getY(), orbits.getZ(), i, orbits.getId());
-				System.out.printf("%-30s %-30s %n", orbits.getX(), orbits.getY());
+				System.out.printf("%-30s %-30s %n", orbit.getX(), orbit.getY());
 
 			}
 			//TimeUnit.SECONDS.sleep(1);

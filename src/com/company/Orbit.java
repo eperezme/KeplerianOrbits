@@ -12,12 +12,12 @@ import static com.company.Main.PI;
 
 @Getter
 @Setter
-public class Orbits
+public class Orbit
 {
 
 	/*** CONSTRUCTOR ***/
 	// Make self-explain variables
-	public Orbits(double _e, double _a, double _omega, double _w, double _i, double _period)
+	public Orbit(double _e, double _a, double _omega, double _w, double _i, double _period)
 	{
 		eccentricity = _e;
 		smAxis = _a;
