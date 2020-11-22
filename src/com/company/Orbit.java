@@ -127,38 +127,6 @@ public class Orbit
 		meanAngularMotion = (2 * PI) / period;
 	}
 
-	public double getSemiParameter()
-	{
-		return semiParameter;
-	}
-
-	public double getIter()
-	{
-		return iter;
-	}
-
-	public double getxStored()
-	{
-		if (xStored == 0)
-		{
-			getPosition();
-			return xStored;
-		}
-		else
-			return xStored;
-	}
-
-	public double getyStored()
-	{
-		if (yStored == 0)
-		{
-			getPosition();
-			return yStored;
-		}
-		else
-			return yStored;
-	}
-
 
 	public void getRVector(ArrayList<Integer> time, Random random, int k)
 	{
