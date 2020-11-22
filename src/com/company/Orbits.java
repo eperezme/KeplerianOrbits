@@ -4,6 +4,7 @@ import org.ejml.simple.SimpleMatrix;
 import org.threadly.util.Clock;
 
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.Random;
 import static com.company.Main.G;
 import static com.company.Main.PI;
@@ -35,10 +36,10 @@ public class Orbits {
 
     }
 
-    public double getEccAnom() {
+    public double getEccAnom(ArrayList<Integer> time, int k) {
 
         double error = 1;
-        double MeanAnom = getMeanAnom();
+        double MeanAnom = getMeanAnom(time, k);
         MeanAnom = MeanAnom / 360;
         MeanAnom = 2.0 * PI * (MeanAnom - Math.floor(MeanAnom));
         if (MeanAnom > -PI && MeanAnom < 0 || MeanAnom > PI) eccAnom = MeanAnom - eccentricity;
@@ -56,9 +57,9 @@ public class Orbits {
 
 
 
-    public double getTrueAnom(){
+    public double getTrueAnom(ArrayList<Integer> time, int k){
         double K, S, C, fak, phi;
-        double eccAnom = getEccAnom();
+        double eccAnom = getEccAnom(time, k);
         K = PI / 180.0;
         S = Math.sin(eccAnom);
         C = Math.cos(eccAnom);
@@ -88,8 +89,8 @@ public class Orbits {
 
 
     //SOLVE THIS
-    public double getMeanAnom(){
-        return getMeanAngularMotion() * getTimeSincePeriapsis();
+    public double getMeanAnom(ArrayList<Integer> time, int k){
+        return getMeanAngularMotion() * time.get(k);
     }
 
     public double getSmAxis(){
@@ -156,13 +157,19 @@ public class Orbits {
     }
 
 
-    public void getRVector()
+    public void getRVector(ArrayList<Integer> time, Random random, int k)
     {
-        Random random = new Random();
-        double phi = getTrueAnom();
-        double cosTrue = Math.cos(phi);
-        double sinTrue = Math.sin(phi);
-        SimpleMatrix rVectorPQW = new SimpleMatrix(3,1, true, new double[]{  (semiParameter * cosTrue) / (1 + eccentricity * cosTrue), (semiParameter * sinTrue) / (1 + eccentricity * sinTrue), 0 });
+        double phi, cosTrue, sinTrue;
+         phi = getTrueAnom(time, k);
+         cosTrue = Math.cos(phi);
+         sinTrue = Math.sin(phi);
+
+        SimpleMatrix rVectorPQW = new SimpleMatrix(3,1);
+        rVectorPQW.set(0,0, ((semiParameter * cosTrue)/(1 + eccentricity * cosTrue)));
+        rVectorPQW.set(1, 0, ((semiParameter * sinTrue)/(1 + eccentricity * cosTrue)));
+        rVectorPQW.set(2,0, 0);
+
+        //SimpleMatrix rVectorPQW = new SimpleMatrix(3,1, true, new double[]{  (semiParameter * cosTrue) / (1 + eccentricity * cosTrue), (semiParameter * sinTrue) / (1 + eccentricity * sinTrue), 0 });
         SimpleMatrix rVectorIJK = rotationMatrix.mult(rVectorPQW);
         //System.out.println("p = " + p + " && " + "true " + phi + " && " + "e " + eccentricity);
         //rotationMatrix.print();
@@ -186,7 +193,25 @@ public class Orbits {
         double omega = Math.toRadians(longitudeAscendingNode);
         double i = Math.toRadians(inclination);
         double w = Math.toRadians(argumentPeriapsis);
-        return new SimpleMatrix(3,3, true, new double[]{((Math.cos(omega) * Math.cos(w)) - (Math.sin(omega) * Math.sin(w) * Math.cos(i))), ((((-1) * Math.cos(omega)) * Math.sin(w)) - (Math.sin(omega) * Math.cos(w) * Math.cos(i))), (Math.sin(omega) * Math.sin(i)),(Math.sin(omega) * Math.cos(w) + Math.cos(omega) * Math.sin(w) * Math.cos(i)), (((-1) * Math.sin(omega)) * Math.cos(w) * Math.cos(i)), (((-1) * Math.cos(omega) * Math.sin(i))), (Math.sin(w) * Math.sin(i)), (Math.cos(w) * Math.sin(i)), (Math.cos(i))});
+        double cosLon = Math.cos(omega);
+        double sinLon = Math.sin(omega);
+        double cosArg = Math.cos(w);
+        double sinArg = Math.sin(w);
+        double cosInc = Math.cos(i);
+        double sinInc= Math.sin(i);
+        SimpleMatrix rotation = new SimpleMatrix(3, 3);
+        rotation.set(0,0, cosLon * cosArg - sinLon * sinArg * cosInc );
+        rotation.set(1, 0, sinLon * cosArg + cosLon * sinArg * cosInc);
+        rotation.set(2,0, sinArg * sinInc);
+        rotation.set(0,1, -cosLon * sinArg - sinLon * cosArg * cosInc);
+        rotation.set(1, 1, -sinLon * sinArg + cosLon * cosArg * cosInc);
+        rotation.set(2, 1, cosArg * sinInc);
+        rotation.set(0, 2, sinLon * sinInc);
+        rotation.set(1,2, -cosLon * sinInc);
+        rotation.set(2,2, cosInc);
+
+        return rotation;
+
     }
 
 

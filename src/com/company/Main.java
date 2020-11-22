@@ -1,8 +1,12 @@
 package com.company;
 
 import org.threadly.util.Clock;
+
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
+import static java.sql.Types.TIME;
 
 public class Main {
 
@@ -10,20 +14,24 @@ public class Main {
     public static final double G = 6.67428E-11;
     public static final double PI = Math.PI;
     private static final int numberOfOrbits = 1;
+    private static final int TIME = 1000;
 
+    /*
     public static Clock initClock() {
         return new Clock();
     }
+     */
 
 
     /*** FUNCTIONS**/
 
-    public static <numberOfOrbits> Orbits[] initOrbits(Random random) {
+    public static Orbits[] initOrbits(Random random) {
         Orbits[] orbitsList = new Orbits[numberOfOrbits];
 
         for (int i = 0; i < orbitsList.length; i++) {
             //orbitsList[i] = new Orbits(0.3, 100, random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, i, 60);
-            orbitsList[i] = new Orbits(0.3, 4000, 0, 90, 0, i, 60);
+            //orbitsList[i] = new Orbits(0.3, 4000, 0, 90, 0, i, 60);
+            orbitsList[i] = new Orbits(random.nextDouble(), random.nextDouble() * 10000, 0, 90, 0, i, 60);
 
         }
 
@@ -31,11 +39,25 @@ public class Main {
         return orbitsList;
     }
 
+    public static ArrayList<Integer> createTime() {
+        ArrayList<Integer> time = new ArrayList<Integer>();
+
+        for (int i = 0; i < TIME+1; i++) {
+            time.add(i);
+        }
+
+        return time;
+    }
+
+
 
     public static void main(String[] args) throws InterruptedException {
 
         //Instance for clock
-        Clock clock = initClock();
+        //Clock clock = initClock();
+
+        //Create time array
+        ArrayList<Integer> time = createTime();
 
         //Instance for random number generator
 
@@ -53,19 +75,25 @@ public class Main {
             System.out.println("Before " + B + " // After " + orbits.getMeanAngularMotion());
         }
         */
-        System.out.printf("%-20s %-20s %-20s %-20s %-20s %n", "X", "Y", "Z", "Time", "OrbitNum");
+        System.out.println("Exccentricity");
+        System.out.println(orbitsList[0].getecc());
+        System.out.printf("%-30s %-30s %-20s %-20s %-20s %n", "X", "Y", "Z", "Time", "OrbitNum");
 
-        for (int k = 0; k <= 300; k++) {
+        for (int i : time) {
             for (Orbits orbits : orbitsList) {
-                orbits.getRVector();
-                System.out.printf("%-20s %-20s %-20s %-20s %n", orbits.getX(), orbits.getY(), orbits.getZ(), orbits.getActualTime(), orbits.getId());
+                orbits.getRVector(time, random, i);
+                //System.out.printf("%-30s %-30s %-20s %-20s %n", orbits.getX(), orbits.getY(), orbits.getZ(), i, orbits.getId());
+                System.out.printf("%-30s %-30s %n", orbits.getX(), orbits.getY());
+
             }
-            TimeUnit.SECONDS.sleep(1);
+            //TimeUnit.SECONDS.sleep(1);
 
         }
 
 
     }
+
+
 }
 
 
