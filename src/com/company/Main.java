@@ -1,20 +1,16 @@
 package com.company;
 
-import org.threadly.util.Clock;
-
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
-import static java.sql.Types.TIME;
+public class Main
+{
 
-public class Main {
-
-    /*** ATRIBUTES ***/
-    public static final double G = 6.67428E-11;
-    public static final double PI = Math.PI;
-    private static final int numberOfOrbits = 1;
-    private static final int TIME = 1000;
+	/*** ATRIBUTES ***/
+	public static final double G = 6.67428E-11;
+	public static final double PI = Math.PI;
+	private static final int numberOfOrbits = 1;
+	private static final int TIME = 1000;
 
     /*
     public static Clock initClock() {
@@ -23,48 +19,52 @@ public class Main {
      */
 
 
-    /*** FUNCTIONS**/
+	/*** FUNCTIONS**/
 
-    public static Orbits[] initOrbits(Random random) {
-        Orbits[] orbitsList = new Orbits[numberOfOrbits];
+	public static Orbits[] initOrbits(Random random)
+	{
+		Orbits[] orbitsList = new Orbits[numberOfOrbits];
 
-        for (int i = 0; i < orbitsList.length; i++) {
-            //orbitsList[i] = new Orbits(0.3, 100, random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, i, 60);
-            //orbitsList[i] = new Orbits(0.3, 4000, 0, 90, 0, i, 60);
-            orbitsList[i] = new Orbits(random.nextDouble(), random.nextDouble() * 10000, 0, 90, 0, i, 60);
+		for (Orbits orbit : orbitsList)
+		{
+			//orbitsList[i] = new Orbits(0.3, 100, random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, i, 60);
+			//orbitsList[i] = new Orbits(0.3, 4000, 0, 90, 0, i, 60);
+            orbit = new Orbits(random.nextDouble(), random.nextDouble() * 10000, 0, 90, 0,60);
 
-        }
-
-
-        return orbitsList;
-    }
-
-    public static ArrayList<Integer> createTime() {
-        ArrayList<Integer> time = new ArrayList<Integer>();
-
-        for (int i = 0; i < TIME+1; i++) {
-            time.add(i);
-        }
-
-        return time;
-    }
+		}
 
 
+		return orbitsList;
+	}
 
-    public static void main(String[] args) throws InterruptedException {
+	public static ArrayList<Integer> createTime()
+	{
+		ArrayList<Integer> time = new ArrayList<Integer>();
 
-        //Instance for clock
-        //Clock clock = initClock();
+		for (int i = 0; i < TIME + 1; i++)
+		{
+			time.add(i);
+		}
 
-        //Create time array
-        ArrayList<Integer> time = createTime();
+		return time;
+	}
 
-        //Instance for random number generator
 
-        Random random = new Random();
+	public static void main(String[] args)
+	{
 
-        //Array of Orbit instances /// I could change this with Arraylist instead of normal Array
-        Orbits[] orbitsList = initOrbits(random);
+		//Instance for clock
+		//Clock clock = initClock();
+
+		//Create time array
+		ArrayList<Integer> time = createTime();
+
+		//Instance for random number generator
+
+		Random random = new Random();
+
+		//Array of Orbit instances /// I could change this with Arraylist instead of normal Array
+		Orbits[] orbitsList = initOrbits(random);
 
 
         /*
@@ -75,23 +75,25 @@ public class Main {
             System.out.println("Before " + B + " // After " + orbits.getMeanAngularMotion());
         }
         */
-        System.out.println("Exccentricity");
-        System.out.println(orbitsList[0].getecc());
-        System.out.printf("%-30s %-30s %-20s %-20s %-20s %n", "X", "Y", "Z", "Time", "OrbitNum");
+		System.out.println("Exccentricity");
+		System.out.println(orbitsList[0].getecc());
+		System.out.printf("%-30s %-30s %-20s %-20s %-20s %n", "X", "Y", "Z", "Time", "OrbitNum");
 
-        for (int i : time) {
-            for (Orbits orbits : orbitsList) {
-                orbits.getRVector(time, random, i);
-                //System.out.printf("%-30s %-30s %-20s %-20s %n", orbits.getX(), orbits.getY(), orbits.getZ(), i, orbits.getId());
-                System.out.printf("%-30s %-30s %n", orbits.getX(), orbits.getY());
+		for (int i : time)
+		{
+			for (Orbits orbits : orbitsList)
+			{
+				orbits.getRVector(time, random, i);
+				//System.out.printf("%-30s %-30s %-20s %-20s %n", orbits.getX(), orbits.getY(), orbits.getZ(), i, orbits.getId());
+				System.out.printf("%-30s %-30s %n", orbits.getX(), orbits.getY());
 
-            }
-            //TimeUnit.SECONDS.sleep(1);
+			}
+			//TimeUnit.SECONDS.sleep(1);
 
-        }
+		}
 
 
-    }
+	}
 
 
 }
