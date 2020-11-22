@@ -22,8 +22,8 @@ public class Main {
         Orbits[] orbitsList = new Orbits[numberOfOrbits];
 
         for (int i = 0; i < orbitsList.length; i++) {
-            orbitsList[i] = new Orbits(random.nextDouble(), 100, random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, i, 300);
-            //orbitsList[i] = new Orbits(200000, 20000, 0.83285, 4000, 227.89, 53.38, 87.87, i, 60);
+            //orbitsList[i] = new Orbits(0.3, 100, random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, i, 60);
+            orbitsList[i] = new Orbits(0.3, 4000, 0, 90, 0, i, 60);
 
         }
 
@@ -45,21 +45,23 @@ public class Main {
         Orbits[] orbitsList = initOrbits(random);
 
 
-
+        /*
         for (Orbits orbits : orbitsList){
             double B = orbits.getMeanAngularMotion();
-            //orbits.setPeriod(random.nextInt(60));
+            orbits.setPeriod(random.nextInt(60));
             System.out.println("//  OMEGA  " + orbits.getLongitudeAscendingNode() + " // " + "w  " + orbits.getArgumentPeriapsis() + " // " + "i " + orbits.getInclination() + " // " + orbits.getId());
             System.out.println("Before " + B + " // After " + orbits.getMeanAngularMotion());
         }
+        */
+        System.out.printf("%-20s %-20s %-20s %-20s %-20s %n", "X", "Y", "Z", "Time", "OrbitNum");
 
-        System.out.printf("%-20s %-20s %-20s %-20s %n", "X", "Y", "Z", "Time");
-        while (true) {
+        for (int k = 0; k <= 300; k++) {
             for (Orbits orbits : orbitsList) {
                 orbits.getRVector();
-                System.out.printf("%-20s %-20s %-20s %-20s %n", orbits.getX(), orbits.getY(), orbits.getZ(), orbits.getActualTime());
+                System.out.printf("%-20s %-20s %-20s %-20s %n", orbits.getX(), orbits.getY(), orbits.getZ(), orbits.getActualTime(), orbits.getId());
             }
             TimeUnit.SECONDS.sleep(1);
+
         }
 
 
