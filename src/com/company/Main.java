@@ -76,7 +76,7 @@ public class Main
         }
         */
 		System.out.println("Exccentricity");
-		System.out.println(orbitsList[0].getecc());
+		System.out.println(orbitsList[0].getEccentricity());
 		System.out.printf("%-30s %-30s %-20s %-20s %-20s %n", "X", "Y", "Z", "Time", "OrbitNum");
 
 		for (int i : time)

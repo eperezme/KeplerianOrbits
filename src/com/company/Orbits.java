@@ -1,5 +1,7 @@
 package com.company;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.ejml.simple.SimpleMatrix;
 import org.threadly.util.Clock;
 
@@ -8,6 +10,8 @@ import java.util.Random;
 
 import static com.company.Main.PI;
 
+@Getter
+@Setter
 public class Orbits
 {
 
@@ -98,31 +102,6 @@ public class Orbits
 	public double getMeanAnom(ArrayList<Integer> time, int k)
 	{
 		return getMeanAngularMotion() * time.get(k);
-	}
-
-	public double getSmAxis()
-	{
-		return smAxis;
-	}
-
-	public double getecc()
-	{
-		return eccentricity;
-	}
-
-	public double getMu()
-	{
-		return mu;
-	}
-
-	public double getMeanAngularMotion()
-	{
-		return meanAngularMotion;
-	}
-
-	public double getPeriod()
-	{
-		return period;
 	}
 
 	public void setPeriod(double _period)
@@ -242,7 +221,6 @@ public class Orbits
 
 
 	/*** Atributes ***/
-
 	private final double eccentricity;
 	private final double smAxis;
 	private double eccAnom;
@@ -259,36 +237,6 @@ public class Orbits
 	private final double longitudeAscendingNode;
 	private final double argumentPeriapsis;
 	public SimpleMatrix rotationMatrix;
-
-	public double getInclination()
-	{
-		return inclination;
-	}
-
-	public double getLongitudeAscendingNode()
-	{
-		return longitudeAscendingNode;
-	}
-
-	public double getArgumentPeriapsis()
-	{
-		return argumentPeriapsis;
-	}
-
-	public double getZ()
-	{
-		return z;
-	}
-
-	public double getX()
-	{
-		return x;
-	}
-
-	public double getY()
-	{
-		return y;
-	}
 
 }
 

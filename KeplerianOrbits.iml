@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.ejml:ejml-all:0.40" level="project" />
     <orderEntry type="library" name="org.threadly:threadly:6.5" level="project" />
+    <orderEntry type="library" name="org.projectlombok:lombok:1.18.16" level="project" />
   </component>
 </module>
