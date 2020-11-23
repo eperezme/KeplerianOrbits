@@ -20,6 +20,10 @@ public class Orbit
 	// e is the eccentricity, how much eccentric is the anomaly, from 0 to 0.9999, (0 meaning totally circular)
 	// a is the semi-major axis, the distance from the center of the orbit to one of the apsis (Apoapsis or Periapsis)
 	// omega is the longitude of the Ascending Node
+	// w is the argument of the periapsis
+	// i is the inclination
+	// Those 3 parameters are the X, Y and Z rotations of the orbit
+	// Period is the time needed for the body to complete 1 orbit
 	public Orbit(double _e, double _a, double _omega, double _w, double _i, double _period)
 	{
 		eccentricity = _e;
