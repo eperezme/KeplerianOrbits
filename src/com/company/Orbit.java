@@ -16,7 +16,10 @@ public class Orbit
 {
 
 	/*** CONSTRUCTOR ***/
-	// Make self-explain variables
+	// It needs the following parameters:
+	// e is the eccentricity, how much eccentric is the anomaly, from 0 to 0.9999, (0 meaning totally circular)
+	// a is the semi-major axis, the distance from the center of the orbit to one of the apsis (Apoapsis or Periapsis)
+	// omega is the longitude of the Ascending Node
 	public Orbit(double _e, double _a, double _omega, double _w, double _i, double _period)
 	{
 		eccentricity = _e;
@@ -25,7 +28,7 @@ public class Orbit
 		argumentPeriapsis = _w;
 		inclination = _i;
 		period = _period;
-		rotationMatrix = initRotationMatrix();
+		rotationMatrix = calculateRotationMatrix();
 		rotationMatrix.print();
 		orbitSetup();
 	}
@@ -41,6 +44,19 @@ public class Orbit
 
 	}
 
+	//Mean anomaly is the angle in degrees (0,0 is one of the focus) from the periapsis.
+	// It gives the position assuming that the body's velocity doesn't change.
+	// Necessary to get the eccentric anomaly.
+	public double getMeanAnom(ArrayList<Integer> time, int k)
+	{
+		return getMeanAngularMotion() * time.get(k);
+	}
+
+
+	// Eccentric anomaly is the angle in degrees (0,0 is the center of the ellipse) from the Periapsis to the Teorical position
+	// if the ellipse was a circle. Is an intermediate parameter
+	//Here we apply the Newton's iteration method to find the Eccentric anomaly using the Mean anomaly until they converge into
+	// a solution.
 	public double getEccAnom(ArrayList<Integer> time, int k)
 	{
 
@@ -64,7 +80,7 @@ public class Orbit
 		return eccAnom;
 	}
 
-
+	// True Anomaly is the angle in degrees (0,0 is ) from the periapsis to the real position <-- That's what we are searching for.
 	public double getTrueAnom(ArrayList<Integer> time, int k)
 	{
 		double K, S, C, fak, phi;
@@ -80,54 +96,8 @@ public class Orbit
 		return Math.round(phi * Math.pow(10, dp)) / Math.pow(10, dp);
 	}
 
-	public String getPosition()
-	{
-		double C, S, x, y;
-
-		C = Math.cos(eccAnom);
-		S = Math.sin(eccAnom);
-
-		x = smAxis * (C - eccentricity);
-		y = smAxis * Math.sqrt(1.0 - eccentricity * eccentricity) * S;
-
-		xStored = x;
-		yStored = y;
-
-		return "(" + x + "," + y + ")";
-
-	}
-
-
-	//SOLVE THIS
-	public double getMeanAnom(ArrayList<Integer> time, int k)
-	{
-		return getMeanAngularMotion() * time.get(k);
-	}
-
-	public void setPeriod(double _period)
-	{
-		period = _period;
-		updateMeanAngularMotion();
-	}
-
-	// Lombok? <- Autoconstructor
-	public void setMeanAngularMotion(double _newAngularMotion)
-	{
-		meanAngularMotion = _newAngularMotion;
-		updatePeriod();
-	}
-
-	public void updatePeriod()
-	{
-		period = (2 * PI) / meanAngularMotion;
-	}
-
-	public void updateMeanAngularMotion()
-	{
-		meanAngularMotion = (2 * PI) / period;
-	}
-
-
+	//Once we find the True Anomaly we need to get a 3D Vector from the Main focus to the position.
+	// We use the rotationMatrix that, using the orbital parameters, gives us the 3D vector to the position.
 	public void getRVector(ArrayList<Integer> time, Random random, int k)
 	{
 		double phi, cosTrue, sinTrue;
@@ -151,17 +121,9 @@ public class Orbit
 		z = rVectorIJK.get(2, 0);
 	}
 
-	public double getTimeSincePeriapsis()
-	{
-		return getActualTime() % getPeriod();
-	}
-
-	public double getActualTime()
-	{
-		return (double) Clock.accurateForwardProgressingMillis() / 1000;
-	}
-
-	public SimpleMatrix initRotationMatrix()
+	// it calculates the matrix used for finding the vector in a 3D space.
+	// if any of the parameters (related to this method) change, the entire matrix has to be recalculated again using this method.
+	public SimpleMatrix calculateRotationMatrix()
 	{
 		double omega = Math.toRadians(longitudeAscendingNode);
 		double i = Math.toRadians(inclination);
@@ -185,6 +147,40 @@ public class Orbit
 
 		return rotation;
 
+	}
+
+	// To change the time needed to complete one orbit.
+	public void setPeriod(double _period)
+	{
+		period = _period;
+		updateMeanAngularMotion();
+	}
+
+	// To change the mean velocity.
+	public void setMeanAngularMotion(double _newAngularMotion)
+	{
+		meanAngularMotion = _newAngularMotion;
+		updatePeriod();
+	}
+
+	public void updatePeriod()
+	{
+		period = (2 * PI) / meanAngularMotion;
+	}
+
+	public void updateMeanAngularMotion()
+	{
+		meanAngularMotion = (2 * PI) / period;
+	}
+
+	public double getTimeSincePeriapsis()
+	{
+		return getActualTime() % getPeriod();
+	}
+
+	public double getActualTime()
+	{
+		return (double) Clock.accurateForwardProgressingMillis() / 1000;
 	}
 
 
