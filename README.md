@@ -2,6 +2,12 @@
 
 This repository contains a Java application for simulating Keplerian orbits.
 
+<div style="display: flex;">
+  <img src="https://cdn.eperezme.com/upload/w_500,o_webp/https://cms.eperezme.com/uploads/orbit_e30_az90_9974081ce5.png" alt="Example 1" style="width: 33%;">
+  <img src="https://cdn.eperezme.com/upload/w_500,o_webp/https://cms.eperezme.com/uploads/orbit_e10_az90_9941f0473b.png" alt="Example 2" style="width: 33%;">
+  <img src="https://cdn.eperezme.com/upload/w_500,o_webp/https://cms.eperezme.com/uploads/orbit_e100_az100_9ef6eea01c.png" alt="Example 3" style="width: 33%;">
+</div>
+
 ## Structure
 
 The main codebase is located in the `src/com/company` directory. The two main classes are:
@@ -24,3 +30,4 @@ Contributions are welcome. Please open an issue to discuss your ideas before mak
 ## License
 
 This project is licensed under the terms of the MIT license.
+
